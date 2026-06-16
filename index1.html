@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { 
+      background: black; 
+      color: white; 
+      font-family: Arial;
+      text-align: center;
+    }
+    h1 { color: cyan; }
+
+    .banner {
+      width: 98%;
+      height: 500px;
+      object-fit: cover;
+      object-position: center;
+      border: 2px solid cyan;
+      display: block;
+      cursor: pointer;
+    }
+
+    .photos {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-width: 650px;
+      margin: 10px auto;
+    }
+    .photos img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      object-position: center top;
+      border: 1px solid cyan;
+      cursor: pointer;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    .overlay.active {
+      display: flex;
+    }
+    .overlay img {
+      max-width: 90%;
+      max-height: 90vh;
+      width: auto;
+      height: auto;
+      border: 2px solid cyan;
+      cursor: grab;
+      user-select: none;
+    }
+    .close {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 2rem;
+      color: cyan;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    .description {
+      margin-top: 15px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .back {
+      display: inline-block;
+      padding: 10px 30px;
+      border: 2px solid cyan;
+      color: cyan;
+      text-decoration: none;
+      margin-top: 20px;
+    }
+    .back:hover {
+      background: cyan;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>ข้อมูลของชมรม</h1>
+
+  <img class="banner" src="benner1.jpg" alt="รูปหลัก" onclick="openImg('benner1.jpg')">
+
+  <div class="photos">
+    <img src="bn1.jpg" alt="รูป1" onclick="openImg('bn1.jpg')">
+    <img src="bn2.jpg" alt="รูป2" onclick="openImg('bn2.jpg')">
+    <img src="bn3.jpg" alt="รูป3" onclick="openImg('bn3.jpg')">
+    <img src="bn5.jpg" alt="รูป4" onclick="openImg('bn5.jpg')">
+  </div>
+
+  <a href="index.html" class="back">← กลับหน้าแรก</a>
+
+  <div class="overlay" id="overlay">
+    <span class="close" onclick="closeImg()">✕</span>
+    <img id="bigImg" src="" alt="รูปใหญ่">
+  </div>
+
+  <script>
+    let scale = 1;
+    let posX = 0, posY = 0;
+    let startX, startY;
+    let isDragging = false;
+
+    function openImg(src) {
+      scale = 1;
+      posX = 0;
+      posY = 0;
+      const img = document.getElementById('bigImg');
+      img.src = src;
+      img.style.transform = 'translate(0px, 0px) scale(1)';
+      document.getElementById('overlay').classList.add('active');
+    }
+
+    function closeImg() {
+      document.getElementById('overlay').classList.remove('active');
+    }
+
+    document.addEventListener('wheel', function(e) {
+      if (document.getElementById('overlay').classList.contains('active')) {
+        e.preventDefault();
+        scale += e.deltaY * -0.01;
+        scale = Math.min(Math.max(scale, 0.5), 5);
+        updateTransform();
+      }
+    }, { passive: false });
+
+    const bigImg = document.getElementById('bigImg');
+
+    bigImg.addEventListener('mousedown', function(e) {
+      isDragging = true;
+      startX = e.clientX - posX;
+      startY = e.clientY - posY;
+      bigImg.style.cursor = 'grabbing';
+    });
+    document.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      posX = e.clientX - startX;
+      posY = e.clientY - startY;
+      updateTransform();
+    });
+    document.addEventListener('mouseup', function() {
+      isDragging = false;
+      bigImg.style.cursor = 'grab';
+    });
+
+    bigImg.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        startX = e.touches[0].clientX - posX;
+        startY = e.touches[0].clientY - posY;
+      }
+    });
+    document.addEventListener('touchmove', function(e) {
+      if (!isDragging || e.touches.length !== 1) return;
+      e.preventDefault();
+      posX = e.touches[0].clientX - startX;
+      posY = e.touches[0].clientY - startY;
+      updateTransform();
+    }, { passive: false });
+    document.addEventListener('touchend', function() {
+      isDragging = false;
+    });
+
+    function updateTransform() {
+      document.getElementById('bigImg').style.transform = 
+        'translate(' + posX + 'px, ' + posY + 'px) scale(' + scale + ')';
+    }
+  </script>
+
+</body>
+</html>

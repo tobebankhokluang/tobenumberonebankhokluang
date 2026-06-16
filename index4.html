@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+        body { 
+      background: black; 
+      color: white; 
+      font-family: Arial;
+      text-align: center;
+    }
+    h1 { color: cyan; }
+
+  .photos {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 10px;
+    max-width: 650px;
+    margin: auto;
+  }
+
+  .photos .big {
+    grid-row: span 3;
+    height: 100%;
+  }
+
+  .photos img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border: 1px solid cyan;
+  }
+
+  .photos .big {
+    height: 100%;
+    min-height: 470px;
+  }
+    .description {
+      margin-top: 15px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .back {
+      display: inline-block;
+      padding: 10px 30px;
+      border: 2px solid cyan;
+      color: cyan;
+      text-decoration: none;
+      margin-top: 20px;
+    }
+    .back:hover {
+      background: cyan;
+      color: black;
+    }
+</style>
+
+<div class="photos">
+  <img class="big" src="p5.jpg" alt="รูปใหญ่">
+  <img src="p6.jpg" alt="รูป2">
+  <img src="p7.jpg" alt="รูป3">
+  <img src="p8.jpg" alt="รูป4">
+</div>
+
+  <p class="description">คำอธิบายกิจกรรมที่ 2 วันที่ 12-17 ตุลาคมประธานชมรมของเราหรือนายวชิรญาณ์ ชื่นอารมย์ได้ เข้าร่วมค่ายพัฒนาศักยภาพสูุความเป็นหนึ่ง TO BE NUMBER ONE CAMP 33</p>
+
+  <a href="index2.html" class="back">← กลับหน้าแรก</a>
+
+</body>
+</html>
+</html>
